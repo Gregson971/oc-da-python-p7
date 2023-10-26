@@ -73,9 +73,12 @@ def display_results(best_combination):
 
     if best_combination:
         print("Best combination possible:")
+        print()
         print(tabulate(best_combination, headers="keys", tablefmt="fancy_grid"))
-        print(f"Total prix : {get_total_price(best_combination)}€")
-        print(f"Total profit : {get_total_profit(best_combination)}%")
+        print()
+        print(f"Number shares bought: {len(best_combination)}")
+        print(f"Total price: {get_total_price(best_combination)}€")
+        print(f"Total profit: {get_total_profit(best_combination)}%")
     else:
         print("Aucune combinaison trouvée avec le budget donné.")
 
