@@ -1,6 +1,7 @@
 import pandas as pd
 from itertools import combinations
 from tabulate import tabulate
+from pyinstrument import Profiler
 
 MAXIMUM_SPENDING_AMOUNT = 500
 
@@ -13,9 +14,6 @@ def get_data(path):
     """
     # Read the data
     df = pd.read_csv(path)
-
-    # Sort the data by profit in descending order
-    df = df.sort_values(by='profit', ascending=False)
 
     # Convert the data to a dictionary
     data = df.to_dict('records')
@@ -33,7 +31,7 @@ def find_best_combination(data):
     best_combination = None
     best_profit = 0
 
-    for i in range(1, len(data) + 1):
+    for i in range(len(data)):
         for combination in combinations(data, i):
             total_price = get_total_price(combination)
             total_profit = get_total_profit(combination)
@@ -51,7 +49,9 @@ def get_total_profit(data):
     :return: profit
     """
 
-    return sum(item['profit'] for item in data)
+    total = sum((item['profit'] / 100) * item['price'] for item in data)
+
+    return round(total, 2)
 
 
 def get_total_price(data):
@@ -61,7 +61,9 @@ def get_total_price(data):
     :return: price
     """
 
-    return sum(item['price'] for item in data)
+    total = sum(item['price'] for item in data)
+
+    return round(total, 2)
 
 
 def display_results(best_combination):
@@ -78,13 +80,19 @@ def display_results(best_combination):
         print()
         print(f"Number shares bought: {len(best_combination)}")
         print(f"Total price: {get_total_price(best_combination)}€")
-        print(f"Total profit: {get_total_profit(best_combination)}%")
+        print(f"Total profit: {get_total_profit(best_combination)}€")
     else:
         print("Aucune combinaison trouvée avec le budget donné.")
 
 
 # Main function
 if __name__ == '__main__':
+    profiler = Profiler()
+    profiler.start()
+
     data = get_data('data/dataset_test_shares.csv')
     best_combination = find_best_combination(data)
     display_results(best_combination)
+
+    profiler.stop()
+    profiler.print()
