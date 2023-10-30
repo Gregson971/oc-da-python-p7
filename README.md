@@ -57,8 +57,14 @@ env\Scripts\activate.bat
 pip install -r requirements.txt
 ```
 
-6. Exécuter le script
+6. Exécuter le script `bruteforce.py`
 
 ```sh
 python bruteforce.py
+```
+
+7. Exécuter le script `optimized.py`
+
+```sh
+python optimized.py
 ```
