@@ -28,13 +28,12 @@ def find_best_combination(data):
     """
 
     best_combination = []
-    best_profit = 0
     data_with_ratio_price_product = []
     sum_price = 0
 
     for item in data:
         if item['price'] > 0:
-            item['ratio_price_profit'] = item['profit'] / item['price']
+            item['ratio_price_profit'] = item['profit'] * item['price']
             data_with_ratio_price_product.append(item)
 
     sorted_data = sorted(data_with_ratio_price_product, key=lambda x: x['ratio_price_profit'], reverse=True)
@@ -44,7 +43,6 @@ def find_best_combination(data):
         if sum_price + sorted_data[i]['price'] <= MAXIMUM_SPENDING_AMOUNT:
             best_combination.append(sorted_data[i])
             sum_price += sorted_data[i]['price']
-            best_profit += sorted_data[i]['profit']
         i += 1
 
     return best_combination
@@ -98,7 +96,7 @@ if __name__ == '__main__':
     profiler = Profiler()
     profiler.start()
 
-    data = get_data('data/dataset_test_shares.csv')
+    data = get_data('data/dataset2_Python+P7.csv')
     best_combination = find_best_combination(data)
     display_results(best_combination)
 
